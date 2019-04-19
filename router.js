@@ -1,6 +1,7 @@
 const Router = require('koa-router');
-
 const router = new Router();
+const { userController, register } = require('./controller/userController');
+
 
 // 添加路由
 router
@@ -31,28 +32,8 @@ router
   });
 
 router
-  .get('/user', async (ctx, next) => {
-    ctx.response.body = 
-    `
-      <form action="/user/register" method="post">
-        <input name="name" type="text" placeholder="请输入用户名：ikcamp"/> 
-        <br/>
-        <input name="password" type="text" placeholder="请输入密码：123456"/>
-        <br/> 
-        <button>GoGoGo</button>
-      </form>
-    `;
-    await next();
-  })
-  .post('/user/register', async (ctx, next) => {
-    let {name, password} = ctx.request.body
-    if( name === 'ikcamp' && password === '123456' ){
-      ctx.response.body = `Hello， ${name}！`
-    }else{
-      ctx.response.body = '账号信息错误'
-    }
-    await next();
-  });
+  .get('/user', userController)
+  .post('/user/register', register);
 
 router
   .get('/404', async (ctx, next) => {
