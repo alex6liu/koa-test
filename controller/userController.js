@@ -1,3 +1,5 @@
+const userService = require('../service/user');
+
 const userController = async (ctx, next) => {
   ctx.response.body = 
   `
@@ -13,11 +15,8 @@ const userController = async (ctx, next) => {
 
 const register = async (ctx, next) => {
   let {name, password} = ctx.request.body
-  if( name === 'i' && password === '1' ){
-    ctx.response.body = `Hello， ${name}！`
-  }else{
-    ctx.response.body = '账号信息错误'
-  }
+  let data = await userService.register(name, password)
+  ctx.response.body = data
 }
 
 module.exports = {
