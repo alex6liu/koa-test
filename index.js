@@ -7,7 +7,7 @@ const path = require('path');
 
 // 加载模板引擎
 app.use(views(path.join(__dirname, './view'), {
-  extension: 'pug'
+  extension: 'ejs'
 }))
 
 app.use( async ( ctx ) => {
