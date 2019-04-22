@@ -7,8 +7,4 @@
 ### 使用
 ```npm i koa-views```
 
-``` js
-app.use(hbs.middleware({
-  viewPath: __dirname + '/views'
-}));
-```
+## 加载静态资源 koa-static
