@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const router = new Router();
 const { indexController } = require('./controller/indexController');
-const { userController, register } = require('./controller/userController');
+const { userController } = require('./controller/userController');
 
 
 // 添加路由
@@ -25,7 +25,6 @@ router
 
 router
   .get('/user', userController)
-  .post('/user/register', register);
 
 router
   .get('/404', async (ctx, next) => {
