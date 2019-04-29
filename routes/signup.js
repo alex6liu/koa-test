@@ -19,34 +19,29 @@ router.post('/signup', async (ctx, next) => {
   }
   const newUser = new User(user);
 
-  var code
-  newUser.save(err => {
-    if (!err) {
-      code = 0
-    } else if (err.code == 11000) {
-      code = -1
+  try {
+    let res = await newUser.save()
+    if (res) {
+      ctx.body = {
+        code: 0,
+        status: 200,
+        message: '注册成功'
+      }
+    }
+  }
+  catch (err) {
+    if (err.code === 11000) {
+      ctx.body = {
+        code: -1,
+        status: 200,
+        message: '此邮箱已注册'
+      }
     } else {
-      code = 999
-    }
-  });
-
-  if (code === 0) {
-    ctx.body = {
-      code: 0,
-      status: 200,
-      message: '注册成功'
-    }
-  } else if (code === -1) {
-    ctx.body = {
-      code: -1,
-      status: 200,
-      message: '邮箱已存在'
-    }
-  } else {
-    ctx.body = {
-      code: 999,
-      status: 200,
-      message: '未知错误'
+      ctx.body = {
+        code: 999,
+        status: 200,
+        message: '未知错误'
+      }
     }
   }
 
