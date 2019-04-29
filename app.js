@@ -15,6 +15,7 @@ app.use(cors({
 }));
 
 const index = require('./routes/index')
+const signup = require('./routes/signup')
 const users = require('./routes/users')
 
 // error handler
@@ -37,11 +38,12 @@ app.use(async (ctx, next) => {
   const start = new Date()
   await next()
   const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+  console.log(start.toLocaleTimeString(), `${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
 // routes
 app.use(index.routes(), index.allowedMethods())
+app.use(signup.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 
 // error-handling

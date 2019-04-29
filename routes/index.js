@@ -1,26 +1,8 @@
 const router = require('koa-router')()
-const mongoose = require('mongoose')
+const db = require('../utils/db')
+const User = require('../schema/user')
 
-// 连接mongodb
-const uri = 'mongodb+srv://tknnn:lbq1993727@backend-api-kxfgn.mongodb.net/test?retryWrites=true'
-mongoose.connect(uri)
-const db = mongoose.connection;
-db.once('open', () => {
-  console.log('Successfully connect to db');
-});
-
-db.on('error', (err) => {
-  console.log(err);
-});
-
-// 账户的数据库模型
-const UserSchema = new mongoose.Schema({
-  username:String,
-  password:String,
-  email:{type:String,unique:true,dropDups: true}
-});
-
-const User = mongoose.model('User', UserSchema);
+db()
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
@@ -28,24 +10,7 @@ router.get('/', async (ctx, next) => {
   })
 })
 
-router.post('/signup', async (ctx, next) => {
-  const data = ctx.request.body
-  const user = {
-    username: data.username,
-    email: data.password,
-    password: data.password
-  }
-  const newUser = new User(user);
-  newUser.save(err => {
-    if (err.code === 11000) {
-      console.log('邮箱已经被使用')
-    } else {
-      console.log(err);
-    }
-  });
-})
-
-router.post('/signin', async (ctx, next) => {
+router.post('/', async (ctx, next) => {
   const data = ctx.request.body
   let userLogin;
   // if (data.username) {
@@ -54,6 +19,7 @@ router.post('/signin', async (ctx, next) => {
   //     password: data.password
   //   }
   // }
+
   if (data.email) {
     userLogin = {
       email: data.email,
