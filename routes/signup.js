@@ -1,13 +1,18 @@
 const router = require('koa-router')()
 const db = require('../utils/db')
 const User = require('../schema/user')
+const svgCaptcha = require('svg-captcha');
 
+// 连数据库
 db()
 
+// 生成验证码
+const captcha = svgCaptcha.create();
+
 router.get('/signup', async (ctx, next) => {
-  ctx.body = {
-    message: 'hi'
-  }
+  ctx.status = 200;
+  ctx.type = 'svg';
+  ctx.body = captcha.data;
 })
 
 router.post('/signup', async (ctx, next) => {
@@ -44,7 +49,6 @@ router.post('/signup', async (ctx, next) => {
       }
     }
   }
-
 })
 
 module.exports = router
